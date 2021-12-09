@@ -1,0 +1,18 @@
+.indexHTMLBody {
+  padding: 0px;
+  margin: 0px;
+  background-color: whitesmoke;
+}
+
+.container {
+  height: 1000px;
+  width: 1080px;
+}
+
+#getStartedButton {
+  text-align: center;
+  margin-top: 20%;
+}
+#dashboard{
+    margin-top: 4%;
+}
