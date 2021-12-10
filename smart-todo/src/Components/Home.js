@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "./Layout/Header";
 import HomeCard from "./Layout/HomeCard";
 import lottie from "lottie-web";
 import { useEffect, useRef } from "react";
