@@ -14,5 +14,10 @@
   margin-top: 20%;
 }
 #dashboard{
-    margin-top: 4%;
+    background-color: tomato;
+}
+
+#inputBarPos{
+  padding-left: 10%;
+  bottom: 0px;
 }

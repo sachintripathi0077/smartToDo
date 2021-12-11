@@ -12,16 +12,28 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+// import { makeStyles } from "@mui/material";
+// import { makeStyles } from '@mui/styles';
 
-const drawerWidth = 250;
+const drawerWidth = "16%";
 
-function SideDrawer() {
+// const useStyles = makeStyles((theme)=>({
+//   bottomPush: {
+//     position: "fixed",
+//     bottom: 0,
+//     textAlign: "center",
+//     paddingBottom: 10,
+// }
+// }))
+
+function SideDrawer(props) {
   {
     console.log("Drawer loaded");
   }
+  // const classes = useStyles();
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       {/* <AppBar
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
@@ -40,7 +52,7 @@ function SideDrawer() {
             width: drawerWidth,
             boxSizing: "border-box",
           },
-          zIndex:1
+          zIndex: 1,
         }}
         variant="permanent"
         anchor="left"
@@ -48,14 +60,16 @@ function SideDrawer() {
         <Toolbar />
         <Divider />
         <List>
-          {["My Day", "Important", "Planned", "Assigned to me","Tasks"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {["My Day", "Important", "Planned", "Assigned to me", "Tasks"].map(
+            (text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            )
+          )}
         </List>
         <Divider />
         <List>
