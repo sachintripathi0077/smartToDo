@@ -12,21 +12,27 @@ import Assigned from "./Layout/DrawerPages/Assigned";
 import All from "./Layout/DrawerPages/All";
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import TaskPaper from './Layout/TaskPaper'
 
 function Dashboard() {
-  const [drawerItem, setDrawerItem] = useState({
-    item: "MyDay",
+  const [drawerItemsState, setDrawerItemsState] = useState({
+    MyDay:[],
+    Important:[],
+    Planned:[],
+    Assigned:[],
+    // All: {...MyDay,...Important,...Planned,...Assigned},
+    CDI:'MyDay'
   });
   const displayDrawerItemType = (type) => {
-    setDrawerItem({ item: type });
+    setDrawerItemsState({...drawerItemsState, CDI:type});
   };
 
   useEffect(() => {
-    console.log(drawerItem.item, "==>State");
-  }, [drawerItem]);
+    console.log(drawerItemsState, "==>Dashboard State");
+  }, [drawerItemsState]);
 
   const renderDrawerItem = () => {
-    switch (drawerItem.item) {
+    switch (drawerItemsState.CDI) {
       case "MyDay":
         return <MyDay />;
       case "Important":
@@ -42,6 +48,20 @@ function Dashboard() {
     }
   };
 
+  const setCurrentDrawerItemState = (inputBarState)=>{
+    console.log(inputBarState,'==> Input bar state passed to dashboard element.')
+    const passedTask = [inputBarState]
+    switch(drawerItemsState.CDI){
+      case 'MyDay': setDrawerItemsState({...drawerItemsState,MyDay:[...drawerItemsState.MyDay,passedTask]}); 
+      case 'Important': setDrawerItemsState({...drawerItemsState,Important:[...drawerItemsState.Important,passedTask]}); 
+      case 'Planned': setDrawerItemsState({...drawerItemsState,Planned:[...drawerItemsState.Planned,passedTask]}); 
+      case 'Assigned': setDrawerItemsState({...drawerItemsState,Assigned:[...drawerItemsState.Assigned,passedTask]});
+      // case 'All': setDrawerItemsState({...drawerItemsState.MyDay,...drawerItemsState.Important,...drawerItemsState.Planned,...drawerItemsState.Assigned});
+      default: console.log("Default case hit.")
+    }
+
+  }
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -49,13 +69,13 @@ function Dashboard() {
           <Grid item xs={6} md={2}>
             <SideDrawer
               displayType={displayDrawerItemType}
-              selectedItem={drawerItem.item}
+              selectedItem={drawerItemsState.CDI}
             />
           </Grid>
           <Grid item xs={6} md={10}>
             {renderDrawerItem()}
-
-            <InputBar />
+            <TaskPaper text={'One day all these hours will make you a Legend!'}/>
+            <InputBar setCDIState = {setCurrentDrawerItemState}/>
           </Grid>
         </Grid>
       </Box>
