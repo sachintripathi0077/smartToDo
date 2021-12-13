@@ -1,49 +1,31 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-// import { makeStyles } from "@mui/material";
-// import { makeStyles } from '@mui/styles';
+import FlareIcon from "@mui/icons-material/Flare";
+import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
+import { pink } from "@mui/material/colors";
+import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
+import { purple } from "@mui/material/colors";
+import { Link, Route, Routes } from "react-router-dom";
+import MyDay from "./DrawerPages/MyDay";
 
-const drawerWidth = "16%";
-
-// const useStyles = makeStyles((theme)=>({
-//   bottomPush: {
-//     position: "fixed",
-//     bottom: 0,
-//     textAlign: "center",
-//     paddingBottom: 10,
-// }
-// }))
+const drawerWidth = "auto";
 
 function SideDrawer(props) {
-  {
-    console.log("Drawer loaded");
-  }
-  // const classes = useStyles();
+  const handleClick = (type) => {
+    props.displayType(type);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
-      {/* <CssBaseline /> */}
-      {/* <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Permanent drawer
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
       <Drawer
         sx={{
           width: drawerWidth,
@@ -60,28 +42,68 @@ function SideDrawer(props) {
         <Toolbar />
         <Divider />
         <List>
-          {["My Day", "Important", "Planned", "Assigned to me", "Tasks"].map(
-            (text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            )
-          )}
+          <ListItem
+            button
+            key={"My Day"}
+            onClick={() => handleClick("MyDay")}
+            selected={props.selectedItem === "MyDay"}
+          >
+            <ListItemIcon>
+              <FlareIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={"My Day"} />
+          </ListItem>
+
+          <ListItem
+            button
+            key={"Important"}
+            onClick={() => handleClick("Important")}
+            selected={props.selectedItem === "Important"}
+          >
+            <ListItemIcon>
+              <GradeOutlinedIcon sx={{ color: pink[500] }} />
+            </ListItemIcon>
+            <ListItemText primary={"Important"} />
+          </ListItem>
+
+          <ListItem
+            button
+            key={"Planned"}
+            onClick={() => handleClick("Planned")}
+            selected={props.selectedItem === "Planned"}
+          >
+            <ListItemIcon>
+              <GridViewOutlinedIcon color="success" />
+            </ListItemIcon>
+            <ListItemText primary={"Planned"} />
+          </ListItem>
+
+          <ListItem
+            button
+            key={"Assigned to me"}
+            onClick={() => handleClick("Assigned")}
+            selected={props.selectedItem === "Assigned"}
+          >
+            <ListItemIcon>
+              <PersonOutlinedIcon color="action" />
+            </ListItemIcon>
+            <ListItemText primary={"Assigned to me"} />
+          </ListItem>
+
+          <ListItem
+            button
+            key={"All Tasks"}
+            onClick={() => handleClick("All")}
+            selected={props.selectedItem === "All"}
+          >
+            <ListItemIcon>
+              <ListOutlinedIcon sx={{ color: purple[500] }} />
+            </ListItemIcon>
+            <ListItemText primary={"All Tasks"} />
+          </ListItem>
         </List>
+
         <Divider />
-        <List>
-          {[].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
     </Box>
   );
