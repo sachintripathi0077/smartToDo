@@ -10,7 +10,7 @@ export default function SimplePaper(props) {
         flexWrap: 'wrap',
         '& > :not(style)': {
           m: 1,
-          width: 'auto',
+          width: '80%',
           height: 'auto',
         },
       }}

@@ -13,7 +13,7 @@ export default function InputBar(props) {
 
   useEffect(() => {
     console.log("inputBarState: ", inputBarState);
-    props.setCDIState(inputBarState);
+    inputBarState.trim() && props.setCDIState(inputBarState);
   }, [inputBarState]);
 
   const handleChange = () => {
@@ -23,11 +23,13 @@ export default function InputBar(props) {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       setInputBarState(event.target.value);
+      document.getElementById('fullWidth').value=''
     }
   };
 
   const handleAddOnClick = () => {
     setInputBarState(document.getElementById("fullWidth").value);
+    document.getElementById('fullWidth').value=''
   };
 
   
