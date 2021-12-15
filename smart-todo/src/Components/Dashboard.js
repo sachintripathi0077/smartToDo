@@ -99,26 +99,99 @@ function Dashboard() {
       case "MyDay":
         return drawerItemsState.MyDay.map((task) => {
           console.log(task.toString());
-          return <TaskPaper text={task.toString()} />;
+          return (
+            <TaskPaper
+              text={task.toString()}
+              index={drawerItemsState.MyDay.indexOf(task)}
+              type={"MyDay"}
+              delete={deleteTask}
+            />
+          );
         });
       case "Important":
         return drawerItemsState.Important.map((task) => {
           console.log(task.toString());
-          return <TaskPaper text={task.toString()} />;
+          return (
+            <TaskPaper
+              text={task.toString()}
+              index={drawerItemsState.Important.indexOf(task)}
+              type={"Important"}
+              delete={deleteTask}
+            />
+          );
         });
       case "Planned":
         return drawerItemsState.Planned.map((task) => {
           console.log(task.toString());
-          return <TaskPaper text={task.toString()} />;
+          return (
+            <TaskPaper
+              text={task.toString()}
+              index={drawerItemsState.Planned.indexOf(task)}
+              type={"Planned"}
+              delete={deleteTask}
+            />
+          );
         });
       case "Assigned":
         return drawerItemsState.Assigned.map((task) => {
           console.log(task.toString());
-          return <TaskPaper text={task.toString()} />;
+          return (
+            <TaskPaper
+              text={task.toString()}
+              index={drawerItemsState.Assigned.indexOf(task)}
+              type={"Assigned"}
+              delete={deleteTask}
+            />
+          );
         });
     }
   };
 
+  const deleteTask = (type, index) => {
+    console.log("Deleting: ", type, index);
+    switch (type) {
+      case "MyDay":
+        const myDayArr = drawerItemsState.MyDay.filter(
+          (task) => task.toString() !== drawerItemsState.MyDay[index].toString()
+        );
+        console.log(myDayArr, "myDayArr");
+        setDrawerItemsState({
+          ...drawerItemsState,
+          MyDay: [...myDayArr],
+        });
+        break;
+      case "Important":
+        const myImportant = drawerItemsState.Important.filter(
+          (task) =>
+            task.toString() !== drawerItemsState.Important[index].toString()
+        );
+        setDrawerItemsState({
+          ...drawerItemsState,
+          Important: [...myImportant],
+        });
+        break;
+      case "Planned":
+        const myPlanned = drawerItemsState.Planned.filter(
+          (task) =>
+            task.toString() !== drawerItemsState.Planned[index].toString()
+        );
+        setDrawerItemsState({
+          ...drawerItemsState,
+          Planned: [...myPlanned],
+        });
+        break;
+      case "Assigned":
+        const myAssigned = drawerItemsState.Assigned.filter(
+          (task) =>
+            task.toString() !== drawerItemsState.Assigned[index].toString()
+        );
+        setDrawerItemsState({
+          ...drawerItemsState,
+          Assigned: [...myAssigned],
+        });
+        break;
+    }
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -131,13 +204,9 @@ function Dashboard() {
           </Grid>
           <Grid item xs={6} md={10}>
             {renderDrawerItem()}
-            {/* <TaskPaper
-              text={"One day all these hours will make you a Legend!"}
-            /> */}
             <div>{renderTasksToPaper()}</div>
-            <div id="inputBarPos"> 
-
-            <InputBar setCDIState={setCurrentDrawerItemState} />
+            <div id="inputBarPos">
+              <InputBar setCDIState={setCurrentDrawerItemState} />
             </div>
           </Grid>
         </Grid>
