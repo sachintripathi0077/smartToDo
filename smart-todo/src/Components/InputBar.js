@@ -12,13 +12,11 @@ export default function InputBar(props) {
   const [inputBarState, setInputBarState] = useState("");
 
   useEffect(() => {
-    console.log("inputBarState: ", inputBarState);
+    
     inputBarState.trim() && props.setCDIState(inputBarState);
   }, [inputBarState]);
 
-  const handleChange = () => {
-    console.log("change happended.");
-  };
+  
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -47,7 +45,7 @@ export default function InputBar(props) {
           fullWidth
           label="Add a task"
           id="fullWidth"
-          onChange={handleChange}
+         
           onKeyPress={handleKeyPress}
         />
         <ListItemIcon>

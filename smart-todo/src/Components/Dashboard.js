@@ -13,6 +13,9 @@ import All from "./Layout/DrawerPages/All";
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import TaskPaper from "./Layout/TaskPaper";
+import Divider from "@mui/material/Divider";
+import Toolbar from "@mui/material/Toolbar";
+
 
 function Dashboard() {
   // Note: This is a temporary state managment for dashboard. Shift the logic to redux and implement firebase. Also do loose coupling of states.
@@ -29,7 +32,6 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    console.log(drawerItemsState, "==>Dashboard State");
     renderTasksToPaper();
   }, [drawerItemsState]);
 
@@ -51,10 +53,7 @@ function Dashboard() {
   };
 
   const setCurrentDrawerItemState = (inputBarState) => {
-    console.log(
-      inputBarState,
-      "==> Input bar state passed to dashboard element."
-    );
+    
     const passedTask = inputBarState && [inputBarState];
 
     switch (drawerItemsState.CDI) {
@@ -90,15 +89,11 @@ function Dashboard() {
   };
 
   const renderTasksToPaper = () => {
-    console.log(
-      "Inside RenderTaskPaper.",
-      "drawerItemsState.renderTaskFor: ",
-      drawerItemsState.renderTaskFor
-    );
+   
     switch (drawerItemsState.CDI) {
       case "MyDay":
         return drawerItemsState.MyDay.map((task) => {
-          console.log(task.toString());
+        
           return (
             <TaskPaper
               text={task.toString()}
@@ -205,6 +200,7 @@ function Dashboard() {
           <Grid item xs={6} md={10}>
             {renderDrawerItem()}
             <div>{renderTasksToPaper()}</div>
+            
             <div id="inputBarPos">
               <InputBar setCDIState={setCurrentDrawerItemState} />
             </div>

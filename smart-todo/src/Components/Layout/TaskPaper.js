@@ -10,15 +10,28 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import ListItemText from "@mui/material/ListItemText";
+import Radio from "@mui/material/Radio";
+import { grey } from "@mui/material/colors";
+import Checkbox from '@mui/material/Checkbox';
+
+
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 
 import { useState, useEffect } from "react";
 
 const ITEM_HEIGHT = "auto";
 
 export default function SimplePaper(props) {
-  
   //====================================IconMenu logic Start======================================
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [taskStatus, setTaskStatus] = useState(false);
+
+  useEffect(() => {
+    console.log(props.text, " status: ", taskStatus);
+  }, [taskStatus]);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,12 +41,16 @@ export default function SimplePaper(props) {
   };
 
   //====================================IconMenu logic End======================================
-  const handleDeleteTask=()=>{
+  const handleDeleteTask = () => {
     // console.log("Deleting task.",props.index)
-    const taskType = props.type
-    props.delete(taskType,props.index)
+    const taskType = props.type;
+    props.delete(taskType, props.index);
     handleClose();
-  }
+  };
+
+  const handleTaskStatus = () => {
+    setTaskStatus(!taskStatus);
+  };
   return (
     <>
       <Box
@@ -48,19 +65,38 @@ export default function SimplePaper(props) {
           },
         }}
       >
-        <ListItem>
+        <ListItem sx={{ pt: "5px", pb: "0px" }}>
           <Paper
             elevation={3}
             sx={{
               borderRadius: "25px",
-              paddingLeft: "25px",
-              paddingRight: "25px",
+              paddingLeft: "2px",
+              paddingRight: "20px",
               width: "100%",
               ml: "1%",
               mr: "0px",
             }}
           >
-            <h3>{props.text}</h3>
+            <ListItem sx={{ pl: "0px", pr: "2px", alignItems: "flex-start" }}>
+              {/* <ListItemIcon sx={{minWidth:'0px'}}>
+                <IconButton>
+                  <RadioButtonUncheckedIcon />
+                </IconButton>
+              </ListItemIcon> */}
+              <Checkbox
+                disableRipple
+                sx={{ "&,&.Mui-checked": { color: grey[500] } }}
+                checked={taskStatus}
+                onClick={handleTaskStatus}
+                // value="a"
+                // name="radio-buttons"
+                // inputProps={{ "aria-label": "A" }}
+              />
+
+              <ListItemText primary={props.text} sx={{ pt: "5px" }} />
+            </ListItem>
+
+            {/* <h3>{props.text}</h3> */}
           </Paper>
           <ListItemIcon>
             <IconButton
