@@ -30,6 +30,7 @@ export default function SimplePaper(props) {
 
   useEffect(() => {
     console.log(props.text, " status: ", taskStatus);
+    props.markCompleted(props.type,props.index,taskStatus);
   }, [taskStatus]);
 
   const open = Boolean(anchorEl);
@@ -50,6 +51,7 @@ export default function SimplePaper(props) {
 
   const handleTaskStatus = () => {
     setTaskStatus(!taskStatus);
+    
   };
   return (
     <>

@@ -16,7 +16,6 @@ import TaskPaper from "./Layout/TaskPaper";
 import Divider from "@mui/material/Divider";
 import Toolbar from "@mui/material/Toolbar";
 
-
 function Dashboard() {
   // Note: This is a temporary state managment for dashboard. Shift the logic to redux and implement firebase. Also do loose coupling of states.
   const [drawerItemsState, setDrawerItemsState] = useState({
@@ -26,13 +25,22 @@ function Dashboard() {
     Assigned: [],
     // All: {...MyDay,...Important,...Planned,...Assigned},
     CDI: "MyDay",
+    MyDayCompleted: [],
+    ImportantCompleted: [],
+    PlannedCompleted: [],
+    AssignedCompleted: [],
   });
   const displayDrawerItemType = (type) => {
-    setDrawerItemsState({ ...drawerItemsState, CDI: type });
+    // setDrawerItemsState({ ...drawerItemsState, CDI: type });
+    setDrawerItemsState((prevState) => {
+      return { ...drawerItemsState, CDI: type };
+    });
   };
 
   useEffect(() => {
     renderTasksToPaper();
+    console.log("MyDayCompleted: ", drawerItemsState.MyDayCompleted);
+    console.log(drawerItemsState);
   }, [drawerItemsState]);
 
   const renderDrawerItem = () => {
@@ -53,15 +61,17 @@ function Dashboard() {
   };
 
   const setCurrentDrawerItemState = (inputBarState) => {
-    
     const passedTask = inputBarState && [inputBarState];
 
     switch (drawerItemsState.CDI) {
       case "MyDay":
         passedTask &&
-          setDrawerItemsState({
-            ...drawerItemsState,
-            MyDay: [...drawerItemsState.MyDay, passedTask],
+          // setDrawerItemsState({
+          //   ...drawerItemsState,
+          //   MyDay: [...drawerItemsState.MyDay, passedTask],
+          // });
+          setDrawerItemsState((prevState) => {
+            return { ...prevState, MyDay: [...prevState.MyDay, passedTask] };
           });
         break;
       case "Important":
@@ -89,17 +99,16 @@ function Dashboard() {
   };
 
   const renderTasksToPaper = () => {
-   
     switch (drawerItemsState.CDI) {
       case "MyDay":
         return drawerItemsState.MyDay.map((task) => {
-        
           return (
             <TaskPaper
               text={task.toString()}
               index={drawerItemsState.MyDay.indexOf(task)}
               type={"MyDay"}
               delete={deleteTask}
+              markCompleted={toggleCompleted}
             />
           );
         });
@@ -112,6 +121,7 @@ function Dashboard() {
               index={drawerItemsState.Important.indexOf(task)}
               type={"Important"}
               delete={deleteTask}
+              markCompleted={toggleCompleted}
             />
           );
         });
@@ -124,6 +134,7 @@ function Dashboard() {
               index={drawerItemsState.Planned.indexOf(task)}
               type={"Planned"}
               delete={deleteTask}
+              markCompleted={toggleCompleted}
             />
           );
         });
@@ -136,6 +147,7 @@ function Dashboard() {
               index={drawerItemsState.Assigned.indexOf(task)}
               type={"Assigned"}
               delete={deleteTask}
+              markCompleted={toggleCompleted}
             />
           );
         });
@@ -143,13 +155,13 @@ function Dashboard() {
   };
 
   const deleteTask = (type, index) => {
-    console.log("Deleting: ", type, index);
+    console.log("Delete task function called.");
     switch (type) {
       case "MyDay":
         const myDayArr = drawerItemsState.MyDay.filter(
           (task) => task.toString() !== drawerItemsState.MyDay[index].toString()
         );
-        console.log(myDayArr, "myDayArr");
+
         setDrawerItemsState({
           ...drawerItemsState,
           MyDay: [...myDayArr],
@@ -187,6 +199,43 @@ function Dashboard() {
         break;
     }
   };
+
+  const toggleCompleted = (type, index, status) => {
+    if (status) {
+      switch (type) {
+        case "MyDay":
+          const completedTask = drawerItemsState.MyDay[index];
+          // deleteTask(type, index);
+
+          setDrawerItemsState({
+            ...drawerItemsState,
+            MyDayCompleted: [...drawerItemsState.MyDayCompleted, completedTask],
+          });
+      }
+    }
+    if (!status) {
+      console.log("Toggle task to false logic.");
+      const taskFromMyDayCompleted =
+        drawerItemsState.MyDay[index] &&
+        drawerItemsState.MyDay[index].toString();
+      console.log(
+        taskFromMyDayCompleted,
+        " ->logic to remove this from MyDayCompleted;[]"
+      );
+      
+      const rindex =
+        drawerItemsState.MyDayCompleted &&
+        drawerItemsState.MyDayCompleted.findIndex(
+          (t) => t.toString() === taskFromMyDayCompleted
+        );
+        console.log(rindex,' rindex')
+        const remainingMyDayCompletedTasks = drawerItemsState.MyDayCompleted &&
+        drawerItemsState.MyDayCompleted.splice(rindex,1);
+        console.log(drawerItemsState.MyDayCompleted,': remainingMyDayCompletedTasks')
+        setDrawerItemsState({...drawerItemsState,MyDayCompleted: [...drawerItemsState.MyDayCompleted]})
+    }
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -200,7 +249,7 @@ function Dashboard() {
           <Grid item xs={6} md={10}>
             {renderDrawerItem()}
             <div>{renderTasksToPaper()}</div>
-            
+
             <div id="inputBarPos">
               <InputBar setCDIState={setCurrentDrawerItemState} />
             </div>
